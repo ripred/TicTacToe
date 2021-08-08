@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9615AB2F26BEE57300A097CF /* line.h in Sources */ = {isa = PBXBuildFile; fileRef = 9615AB2E26BEE4FA00A097CF /* line.h */; };
+		9615AB3026BEE57300A097CF /* common.h in Sources */ = {isa = PBXBuildFile; fileRef = 9615AB2D26BEDAB700A097CF /* common.h */; };
+		9615AB3126BEE57300A097CF /* score.h in Sources */ = {isa = PBXBuildFile; fileRef = 9615AB2C26BED89800A097CF /* score.h */; };
+		9615AB3326BF005200A097CF /* common.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9615AB3226BF005200A097CF /* common.cpp */; };
 		967B692326BB635400778000 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 967B692226BB635400778000 /* main.cpp */; };
 /* End PBXBuildFile section */
 
@@ -23,6 +27,11 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		9615AB2B26BED67F00A097CF /* rle.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = rle.h; sourceTree = "<group>"; };
+		9615AB2C26BED89800A097CF /* score.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = score.h; sourceTree = "<group>"; };
+		9615AB2D26BEDAB700A097CF /* common.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = common.h; sourceTree = "<group>"; };
+		9615AB2E26BEE4FA00A097CF /* line.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = line.h; sourceTree = "<group>"; };
+		9615AB3226BF005200A097CF /* common.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = common.cpp; sourceTree = "<group>"; };
 		967B691F26BB635400778000 /* TicTacToe */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = TicTacToe; sourceTree = BUILT_PRODUCTS_DIR; };
 		967B692226BB635400778000 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -57,7 +66,12 @@
 		967B692126BB635400778000 /* TicTacToe */ = {
 			isa = PBXGroup;
 			children = (
+				9615AB3226BF005200A097CF /* common.cpp */,
 				967B692226BB635400778000 /* main.cpp */,
+				9615AB2D26BEDAB700A097CF /* common.h */,
+				9615AB2C26BED89800A097CF /* score.h */,
+				9615AB2E26BEE4FA00A097CF /* line.h */,
+				9615AB2B26BED67F00A097CF /* rle.h */,
 			);
 			path = TicTacToe;
 			sourceTree = "<group>";
@@ -119,7 +133,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9615AB2F26BEE57300A097CF /* line.h in Sources */,
+				9615AB3026BEE57300A097CF /* common.h in Sources */,
+				9615AB3126BEE57300A097CF /* score.h in Sources */,
 				967B692326BB635400778000 /* main.cpp in Sources */,
+				9615AB3326BF005200A097CF /* common.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -132,7 +150,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -191,7 +209,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -267,7 +285,7 @@
 				967B692526BB635400778000 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		967B692626BB635400778000 /* Build configuration list for PBXNativeTarget "TicTacToe" */ = {
 			isa = XCConfigurationList;
@@ -276,7 +294,7 @@
 				967B692826BB635400778000 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
 	};

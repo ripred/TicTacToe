@@ -11,6 +11,9 @@
 #ifndef rle_h
 #define rle_h
 
+#include <iostream>
+using std::cout;
+
 #include <vector>
 using std::vector;
 
@@ -167,6 +170,181 @@ struct RLE {
         zero = tmp;
         return feed(values);
     } // RLE::restart(vector<int> const &values)
+
+
+
+    // RLE unit tests
+    static bool test_RLE() {
+        RLE rle;
+
+        debug(2, cout << "Running RLE unit tests...\n");
+
+        // save original Base value
+        int orig_base = Base;
+
+        // test setup
+        Base = 3;
+
+        // test empty()
+        debug(2, cout << "    test empty()...");
+        if (!(rle.empty())) { debug(2, cout << "failed.\n"); return false; } else { debug(2, cout << "passed.\n"); }
+
+        // test feed()
+        debug(2, cout << "    test feed()...");
+        rle.feed(0);
+        if (!(!rle.empty())) { debug(2, cout << "failed.\n"); return false; } else { debug(2, cout << "passed.\n"); }
+
+        // test clear()
+        debug(2, cout << "    test clear()...");
+        rle.clear();
+        if (!(rle.empty())) { debug(2, cout << "failed.\n"); return false; } else { debug(2, cout << "passed.\n"); }
+
+        // test feed(vector)
+        debug(2, cout << "    test feed(vector)...");
+        rle.feed( { 1, 2, 3 } );
+        if (!(!rle.empty())) { debug(2, cout << "failed.\n"); return false; } else { debug(2, cout << "passed.\n"); }
+
+        // test restart()
+        debug(2, cout << "    test restart()...");
+        rle.restart(0);
+        if (!(!rle.empty())) { debug(2, cout << "failed.\n"); return false; } else { debug(2, cout << "passed.\n"); }
+
+        // test restart(vector)
+        debug(2, cout << "    test restart(vector)...");
+        rle.restart( { 1, 2, 3 } );
+        if (rle.score().key != NOMOVE) { debug(2, cout << "failed.\n"); return false; } else { debug(2, cout << "passed.\n"); }
+
+        // test FORCED avoidance
+        debug(2, cout << "    test FORCED avoidance...");
+        rle.clear();
+        rle.feed(1);
+        if (!(rle.score().empty())) { debug(2, cout << "failed.\n"); return false; }
+        rle.feed(2);
+        if (!(rle.score().empty())) { debug(2, cout << "failed.\n"); return false; }
+        rle.feed(3);
+        if (rle.score().key != NOMOVE) { debug(2, cout << "failed.\n"); return false; } else { debug(2, cout << "passed.\n"); }
+
+        // test score().empty()
+        debug(2, cout << "    test score().empty()...");
+        rle.clear();
+        if (!(rle.score().empty())) { debug(2, cout << "failed.\n"); return false; } else { debug(2, cout << "passed.\n"); }
+
+        // test false FORCED detection
+        debug(2, cout << "    test false FORCED detection...");
+        rle.clear();
+        rle.feed(1);
+        if (!(rle.score().empty())) { debug(2, cout << "failed.\n"); return false; }
+        rle.feed(0);
+        if (!(rle.score().empty())) { debug(2, cout << "failed.\n"); return false; }
+        rle.feed(1);
+        if (!(rle.score().empty())) { debug(2, cout << "failed.\n"); return false; } else { debug(2, cout << "passed.\n"); }
+
+        // test FORCED detection
+        debug(2, cout << "    test FORCED detection...");
+        rle.clear();
+        rle.feed(1);
+        if (rle.key != ZERO) { debug(2, cout << "failed.\n"); return false; }
+        rle.feed(1);
+        if (rle.key != ZERO) { debug(2, cout << "failed.\n"); return false; }
+        rle.feed(0);
+        if (rle.key != FORCED) { debug(2, cout << "failed.\n"); return false; }
+        if (rle.value != 2) { debug(2, cout << "failed.\n"); return false; } else { debug(2, cout << "passed.\n"); }
+
+        // test score()
+        debug(2, cout << "    test score()...");
+        if (rle.score().key != FORCED) { debug(2, cout << "failed.\n"); return false; } else { debug(2, cout << "passed.\n"); }
+
+        // test !score().empty()
+        debug(2, cout << "    test !score().empty()...");
+        if (rle.score().empty()) { debug(2, cout << "failed.\n"); return false; } else { debug(2, cout << "passed.\n"); }
+
+        // test reverse FORCED detection
+        debug(2, cout << "    test reverse FORCED detection...");
+        rle.clear();
+        rle.feed(0);
+        if (!(rle.score().empty())) { debug(2, cout << "failed.\n"); return false; }
+        rle.feed(1);
+        if (!(rle.score().empty())) { debug(2, cout << "failed.\n"); return false; }
+        rle.feed(1);
+        if (!(rle.key == FORCED)) { debug(2, cout << "failed.\n"); return false; }
+        if (!(rle.value == 0)) { debug(2, cout << "failed.\n"); return false; } else { debug(2, cout << "passed.\n"); }
+
+        // test WINNER avoidance
+        debug(2, cout << "    test WINNER avoidance...");
+        rle.clear();
+        rle.feed(1);
+        if (!rle.score().empty()) { debug(2, cout << "failed.\n"); return false; }
+        rle.feed(2);
+        if (!(rle.score().empty())) { debug(2, cout << "failed.\n"); return false; }
+        rle.feed(2);
+        if (!(rle.key == NOMOVE)) { debug(2, cout << "failed.\n"); return false; } else { debug(2, cout << "passed.\n"); }
+
+        // test WINNER detection
+        debug(2, cout << "    test WINNER detection...");
+        rle.clear();
+        rle.feed(1);
+        if (!(rle.score().empty())) { debug(2, cout << "failed.\n"); return false; }
+        rle.feed(1);
+        if (!(rle.score().empty())) { debug(2, cout << "failed.\n"); return false; }
+        rle.feed(1);
+        if (!(rle.key == WINNER)) { debug(2, cout << "failed.\n"); return false; }
+        if (!(rle.value == 1)) { debug(2, cout << "failed.\n"); return false; } else { debug(2, cout << "passed.\n"); }
+
+        // test WINNER.value correctness
+        debug(2, cout << "    test WINNER.value correctness...");
+        rle.clear();
+        rle.feed(2);
+        if (!(rle.score().empty())) { debug(2, cout << "failed.\n"); return false; }
+        rle.feed(2);
+        if (!(rle.score().empty())) { debug(2, cout << "failed.\n"); return false; }
+        rle.feed(2);
+        if (!(rle.key == WINNER)) { debug(2, cout << "failed.\n"); return false; }
+        if (!(rle.value == 2)) { debug(2, cout << "failed.\n"); return false; } else { debug(2, cout << "passed.\n"); }
+
+        // test FORCED to WINNER transition
+        debug(2, cout << "    test FORCED to WINNER transition...");
+        rle.clear();
+        rle.feed(1);
+        if (!(rle.score().empty())) { debug(2, cout << "failed.\n"); return false; }
+        rle.feed(1);
+        if (!(rle.score().empty())) { debug(2, cout << "failed.\n"); return false; }
+        rle.feed(0);
+        if (!(rle.key == FORCED)) { debug(2, cout << "failed.\n"); return false; }
+        if (!(rle.value == 2)) { debug(2, cout << "failed.\n"); return false; }
+        rle.feed(1);
+        if (!(rle.key == FORCED)) { debug(2, cout << "failed.\n"); return false; }
+        if (!(rle.value == 1)) { debug(2, cout << "failed.\n"); return false; }
+        rle.feed(1);
+        rle.feed(1);
+        if (!(rle.key == WINNER)) { debug(2, cout << "failed.\n"); return false; }
+        if (!(rle.value == 1)) { debug(2, cout << "failed.\n"); return false; } else { debug(2, cout << "passed.\n"); }
+
+        // test set_zero()
+        debug(2, cout << "    test set_zero()...");
+        rle.clear();
+        rle.set_zero('0');
+        rle.feed('X');
+        if (!(rle.score().empty())) { debug(2, cout << "failed.\n"); return false; }
+        rle.feed('X');
+        if (!(rle.score().empty())) { debug(2, cout << "failed.\n"); return false; }
+        rle.feed('0');
+        if (!(rle.key == FORCED)) { debug(2, cout << "failed.\n"); return false; }
+        if (!(rle.value == 2)) { debug(2, cout << "failed.\n"); return false; }
+        rle.restart( { '0', 'X', 'X' } );
+        if (!(rle.key == FORCED)) { debug(2, cout << "failed.\n"); return false; }
+        if (!(rle.value == 0)) { debug(2, cout << "failed.\n"); return false; }
+        rle.feed('X');
+        if (!(rle.key == WINNER)) { debug(2, cout << "failed.\n"); return false; }
+        if (!(rle.value == 'X')) { debug(2, cout << "failed.\n"); return false; } else { debug(2, cout << "passed.\n"); }
+
+        // test teardown
+        Base = orig_base;
+
+        debug(2, cout << "RLE unit tests passed successfully.\n");
+        debug(2, cout << "\n");
+        return true;
+    }
+
 
 };  // end of class RLE
 

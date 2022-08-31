@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		9615AB2F26BEE57300A097CF /* line.h in Sources */ = {isa = PBXBuildFile; fileRef = 9615AB2E26BEE4FA00A097CF /* line.h */; };
 		9615AB3026BEE57300A097CF /* common.h in Sources */ = {isa = PBXBuildFile; fileRef = 9615AB2D26BEDAB700A097CF /* common.h */; };
-		9615AB3126BEE57300A097CF /* score.h in Sources */ = {isa = PBXBuildFile; fileRef = 9615AB2C26BED89800A097CF /* score.h */; };
+		9615AB3126BEE57300A097CF /* move.h in Sources */ = {isa = PBXBuildFile; fileRef = 9615AB2C26BED89800A097CF /* move.h */; };
 		9615AB3326BF005200A097CF /* common.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9615AB3226BF005200A097CF /* common.cpp */; };
 		967B692326BB635400778000 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 967B692226BB635400778000 /* main.cpp */; };
 /* End PBXBuildFile section */
@@ -28,7 +28,7 @@
 
 /* Begin PBXFileReference section */
 		9615AB2B26BED67F00A097CF /* rle.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = rle.h; sourceTree = "<group>"; };
-		9615AB2C26BED89800A097CF /* score.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = score.h; sourceTree = "<group>"; };
+		9615AB2C26BED89800A097CF /* move.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = move.h; sourceTree = "<group>"; };
 		9615AB2D26BEDAB700A097CF /* common.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = common.h; sourceTree = "<group>"; };
 		9615AB2E26BEE4FA00A097CF /* line.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = line.h; sourceTree = "<group>"; };
 		9615AB3226BF005200A097CF /* common.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = common.cpp; sourceTree = "<group>"; };
@@ -69,7 +69,7 @@
 				9615AB3226BF005200A097CF /* common.cpp */,
 				967B692226BB635400778000 /* main.cpp */,
 				9615AB2D26BEDAB700A097CF /* common.h */,
-				9615AB2C26BED89800A097CF /* score.h */,
+				9615AB2C26BED89800A097CF /* move.h */,
 				9615AB2E26BEE4FA00A097CF /* line.h */,
 				9615AB2B26BED67F00A097CF /* rle.h */,
 			);
@@ -135,7 +135,7 @@
 			files = (
 				9615AB2F26BEE57300A097CF /* line.h in Sources */,
 				9615AB3026BEE57300A097CF /* common.h in Sources */,
-				9615AB3126BEE57300A097CF /* score.h in Sources */,
+				9615AB3126BEE57300A097CF /* move.h in Sources */,
 				967B692326BB635400778000 /* main.cpp in Sources */,
 				9615AB3326BF005200A097CF /* common.cpp in Sources */,
 			);
@@ -198,7 +198,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
-				ONLY_ACTIVE_ARCH = YES;
+				ONLY_ACTIVE_ARCH = NO;
 				SDKROOT = macosx;
 			};
 			name = Debug;
@@ -251,6 +251,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = NO;
 				SDKROOT = macosx;
 			};
 			name = Release;
@@ -259,7 +260,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 6HG294TS8V;
+				DEVELOPMENT_TEAM = B7J87UA6XX;
 				ENABLE_HARDENED_RUNTIME = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -269,7 +270,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 6HG294TS8V;
+				DEVELOPMENT_TEAM = B7J87UA6XX;
 				ENABLE_HARDENED_RUNTIME = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};

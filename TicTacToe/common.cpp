@@ -5,10 +5,48 @@
 //  Created by trent on 8/7/21.
 //
 
+#include <cstring>
 #include "common.h"
-#include "score.h"
+#include "move.h"
 #include "line.h"
-#include "rle.h"
+
+
+string coords(int const num, int const base) {
+    string str;
+    str += 'A' + num / base;
+    str += itoa(num % base, Grid);
+    return str;
+}
+
+
+void reverse(char s[]) {
+    size_t first = 0, last = strlen(s) - 1;
+    while (first < last) {
+        int tmp = s[first];
+        s[first++] = s[last];
+        s[last--] = tmp;
+    }
+}
+
+string commas(int num) {
+    string s = itoa(num);
+    char buff[s.size() * 2];
+    string tmp;
+
+    strcpy(buff, s.c_str());
+    reverse(buff);
+    for (int i=0; i < strlen(buff); ++i) {
+        char c = buff[i];
+        tmp += c;
+        if ( i < (strlen(buff) - 1) && (i + 1) % 3 == 0)
+            tmp += ',';
+    }
+    strcpy(buff, tmp.c_str());
+    reverse(buff);
+
+    return buff;
+}
+
 
 /**
  * @summary itoa(..) Convert int to string with optional field padding
@@ -18,20 +56,22 @@
  * @param base    the number base to use. default is 10
  * @param padlen  pad to right justify to this field length.
  * @param padchar the character to pad the length to. default pad char is ' '
- * @param left    left justify instead of right if != 0
+ * @param left    left justify instead of right if true
  *
  * @returns string representaion of the integer value
  */
-string itoa(int num, char s[], int const base, int const padlen, char padchar, bool left) {
+string const itoa(int num, char s[], int const base, int const padlen, char padchar, bool left) {
     int i, sign;
     
     if ((sign = num) < 0)     /* record sign */
         num = -num;           /* make n positive */
 
     i = 0;
-    do {            /* generate digits in reverse order */
-        s[i++] = num % base + '0';    /* get next digit */
-    } while ((num /= base) > 0);      /* delete it */
+    do {    /* generate digits in reverse order */
+        char digit = num % base;
+        digit += (digit <= 9) ? '0' : 'a' - 10;
+        s[i++] = digit;             /* get next digit */
+    } while ((num /= base) > 0);    /* delete it */
 
     if (sign < 0)
         s[i++] = '-';
@@ -58,9 +98,9 @@ string itoa(int num, char s[], int const base, int const padlen, char padchar, b
  * you don't have to declare a buffer at the call site first
  *
  */
-string itoa(int n, int const base, int const pad, char padchar, bool left) {
+string const itoa(int num, int const base, int const padlen, char padchar, bool left) {
     char tmp[32];
-    return itoa(n, tmp, base, pad, padchar, left);
+    return itoa(num, tmp, base, padlen, padchar, left);
 }
 
 

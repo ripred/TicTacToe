@@ -1,25 +1,34 @@
-//
-//  line.h
-//  TicTacToe
-//
-//  Created by trent on 8/7/21.
-//
+///
+///  @file line.h
+///  @brief the declaration of the Line class
+///
+///  @author trent m. wyatt
+///  @date August 7, 2021
+///
 
 #ifndef line_h
 #define line_h
 
-#include "common.h"
-#include "score.h"
-#include "rle.h"
+#include <iostream>
+using std::ostream;
 
+#include <map>
+using std::pair;
+using std::map;
+
+#include "common.h"
+#include "move.h"
+
+/// @brief Line represents a series of board cells with a starting offset
+/// into the board and a delta value to add to the current offset to get to
+/// the next cell in the Line.
+///
 struct Line {
 public:
     int const   m_offset;   // position on board where this line starts
     int const   m_delta;    // delta to add to get to next cell in this line
-    Score       m_results;  // results after loading the cells and analyzing
-
-    // BUGBUG! Finish implementing faster reference-cells!
-    vector<int> m_cells;
+    vector<int> m_cells;    // the cell's contents that make up this line
+    Move       m_results;   // results after loading the cells and analyzing
 
 
     string to_string(void) const {
@@ -34,30 +43,70 @@ public:
         return ss.str();
     } // Line::to_string()
 
+    /**
+     *
+     */
+    Move evaluate(const int board[]) {
+        vector<int> moves, randset;
+        map<int, int> values;
+        int which;
 
-    inline int get_index(vector<int> const &cells) const {
-        int num = int(cells.size());
-        int index = 0;
-        int i, k, cur;
-
-        for (i=0; i < num; ++i) {
-            cur = cells[num - i - 1];
-            for (k=0; k < i; ++k) {
-                cur *= Base;
-            }
-            index += cur;
+        m_cells.clear();
+        for (int i=0; i < Base; ++i) {
+            const int index = m_delta * i + m_offset;
+            m_cells.push_back(board[index]);
+            moves.push_back(index);
+        }
+        
+        // count the value occurrances for 0, 1, or 2 for this line
+        for (int i=0; i < m_cells.size(); ++i) {
+            const int c = m_cells[i];
+            if (c == 0) randset.push_back(m_delta * i + m_offset);
+            values[c]++;
         }
 
-        return index;
-    } // Line::get_index(vector<int> const &cells)
+        which = randset.empty() ? 0 : randset[rand() % randset.size()];
+        const pair<const int, const int> &entry = *(values.begin());
+        switch (values.size()) {
+            case 3:
+                // this line involves both players (values 1 and 2) and empty spots (value 0)
+                if (Grid - randset.size() >= Base) {
+                    return Move(RANDOM1, which, randset);
+                }
+                return Move(RANDOM2, which, randset);
 
+            case 2:
+                // only 2 values involved; (0,1), (0, 2), or (1, 2)
+                if (entry.first == 0) {                     // if there are empty spot(s)
+                    if (entry.second <= 1) {                // and only 1 empty spot
+                        return Move(FORCED, which);        // we know we only have one empty (0) so randset[0] is it's index
+                    }
+                    return Move(RANDOM1, which, randset);  // pick from one of the empty spots
+                }
+                return Move(NOMOVE, 0);
 
-    inline Score score(vector<int> &cells) {
-        extern std::map<int, Score> scoremap;
-        m_results = scoremap[get_index(cells)];
-        return m_results;
-    } // Line::score(vector<int> &cells)
+            case 1:
+                // all cells have the same value
+                if (entry.first == 0) {                     // if they are all empty
+                    return Move(RANDOM1, which, randset);  // pick one of them
+                }
 
+                // the game has been won.
+                // remember the indexes of the winning spots
+                for (int i=0; i < m_cells.size(); ++i) {
+                    randset.push_back(m_delta * i + m_offset);
+                }
+
+                return Move(WINNER, entry.first, moves);
+
+            default:
+                std::cerr << "error - values.size() = " << values.size() << "\n";
+                break;
+        }
+
+        assert(false);
+    } // Line::evaluate()
+    
 
 public:
     Line(int const offset, int const delta) :
@@ -66,94 +115,10 @@ public:
     } // Line::Line(int const offset, int const delta)
 
 
-    Score toGlobal(Score &local) {
-        switch (local.key) {
-            case 0:
-            case NOMOVE:
-            case WINNER:
-                return local;
-            case FORCED:
-                local.value = m_offset + m_delta * local.value;
-                return local;
-            case RANDOM1:
-            case RANDOM2:
-                for (int &choice : local.choices) {
-                    choice = m_offset + m_delta * choice;
-                }
-                return local;
-            default:
-                assert(false);
-        }
-    }
-
-    /**
-     * @summary: Load the cell values for this line.
-     * 'Grid' number of cells are loaded.
-     *
-     * @param board the array of board values
-     * @param cells the container to load this line's values into
-     *
-     * @returns: { WINNER, who } if game is won
-     *           { FORCED, index } if block or win move available
-     *           0 otherwise
-     */
-    inline Score load(int const board[], vector<int> &cells) {
-        int index, item, i;
-        RLE rle1;
-
-        for (i=0; i < Grid; ++i) {
-            index = m_offset + m_delta * i;
-            item = board[index];
-            cells.push_back(item);
-            rle1.feed(item);
-        }
-
-        m_results = rle1.score();
-
-        assert(rle1.value >= 0 && rle1.value < Grid * Grid);
+    inline Move process(int const board[]) {
+        m_results = evaluate(board);
 
         return m_results;
-    } // Line::load(...)
-
-
-    inline Score process(int const board[]) {
-        vector<int> cells;
-
-        // load the cell values
-        load(board, cells);
-        m_results = toGlobal(m_results);
-        switch (m_results.key) {
-            case ZERO:
-                break;
-
-            case NOMOVE:
-            case WINNER:
-            case FORCED:
-                return m_results;
-
-            case RANDOM1:
-            case RANDOM2:
-                assert(false);  // random's should not be generated from load()
-                return m_results;
-        }
-
-        // lookup the Score for this Board state
-        score(cells);
-        m_results = toGlobal(m_results);
-        switch (m_results.key) {
-            case 0:
-            case NOMOVE:
-            case WINNER:
-            case FORCED:
-                return m_results;
-            case RANDOM1:
-            case RANDOM2:
-                m_results.value = m_results.choices[rand() % m_results.choices.size()];
-                return m_results;
-        }
-
-        // should never get here
-        assert(false);
     } // Line::process(...)
 
 };  // class Line

@@ -6,7 +6,8 @@ The board width, height, and the number of pieces in a row required to win can a
 This engine will always play a perfect game resulting in a win or a draw.
 
 ```
-// example output running 1000 games against itself on a 7x7 grid requiring 7 in-a-row:
+// Example output running 1000 games against itself
+// on a 7x7 grid requiring 7 In-A-Row to Win:
 
 turn = 1
    0 1 2 3 4 5 6

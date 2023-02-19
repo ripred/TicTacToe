@@ -1,5 +1,5 @@
 # TicTacToe
-Game engine for games requiring several pieces to be placed "In-A-Row" such as TicTacToe and Gomoku. 
+Game engine for games requiring several pieces to be placed "In-A-Row" such as TicTacToe and Gomoku. Written in standard C++ so runs in any terminal. Has .xproj wrapper if you want to use it for builds/testing but it's not needed and compiles on any machine, OS, or std g++ capable platform.
 
 The board width, height, and the number of pieces in a row required to win can all be customized.
 

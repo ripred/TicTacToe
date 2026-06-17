@@ -1,7 +1,8 @@
 # TicTacToe
-[![License](https://flat.badgen.net/github/license/ripred/TicTacToe)](https://github.com/ripred/TicTacToe/blob/main/LICENSE)
-[![Stars](https://flat.badgen.net/github/stars/ripred/TicTacToe)](https://github.com/ripred/TicTacToe/stargazers)
-[![Forks](https://flat.badgen.net/github/forks/ripred/TicTacToe)](https://github.com/ripred/TicTacToe/network/members)
+
+[![License](https://img.shields.io/static/v1?style=flat&label=License&message=MIT&color=0969da&labelColor=24292f)](https://github.com/ripred/TicTacToe/blob/main/LICENSE)
+[![Stars](https://img.shields.io/static/v1?style=flat&label=Stars&message=2&color=bf8700&labelColor=24292f)](https://github.com/ripred/TicTacToe/stargazers)
+[![Forks](https://img.shields.io/static/v1?style=flat&label=Forks&message=0&color=6f42c1&labelColor=24292f)](https://github.com/ripred/TicTacToe/network/members)
 
 Game engine for games requiring several pieces to be placed "In-A-Row" such as TicTacToe and Gomoku. Written in standard C++ so runs in any terminal. Has .xproj wrapper if you want to use it for builds/testing but it's not needed and compiles on any machine, OS, or std g++ capable platform.
 
